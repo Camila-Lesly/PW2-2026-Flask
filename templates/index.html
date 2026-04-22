@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio — Mi App Flask{% endblock %}
+
+{% block content %}
+
+<!-- Hero section -->
+<div class="hero">
+    <h1>Bienvenidos a Flask + Jinja2</h1>
+    <p class="lead">Motor de plantillas con herencia y estilos tipo Bootstrap</p>
+</div>
+
+<!-- Tarjeta de usuarios -->
+<div class="card">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="mb-0">Usuarios registrados</h2>
+        <span class="badge badge-primary">{{ usuarios|length }} activos</span>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for usuario in usuarios %}
+            <tr>
+                <td class="text-muted">{{ loop.index }}</td>
+                <td class="fw-semibold">{{ usuario.nombre }}</td>
+                <td>{{ usuario.email }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-end mt-3">
+        <a href="{{ url_for('main.contacto') }}" class="btn btn-primary">Ir a Contacto</a>
+    </div>
+</div>
+
+{% endblock %}
