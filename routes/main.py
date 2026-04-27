@@ -1,17 +1,28 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required
+from routes.auth import users_db
 
 main = Blueprint('main', __name__)
 
+
 usuarios = [
-    {'nombre': 'Ana López', 'email': 'ana@ejemplo.com'},
-    {'nombre': 'Carlos García', 'email': 'carlos@ejemplo.com'},
-    {'nombre': 'María Pérez', 'email': 'maria@ejemplo.com'}
+    {'nombre': 'Ana López', 'email': 'ana@ejemplo.com', 'avatar': None},
+    {'nombre': 'Carlos García', 'email': 'carlos@ejemplo.com', 'avatar': None},
+    {'nombre': 'María Pérez', 'email': 'maria@ejemplo.com', 'avatar': None}
 ]
 
 @main.route('/')
 def inicio():
-    return render_template('index.html', usuarios=usuarios)
+    # Combinar usuarios ficticios y registrados
+    usuarios_registrados = []
+    for user in users_db.values():
+        usuarios_registrados.append({
+            'nombre': getattr(user, 'username', None),
+            'email': user.email,
+            'avatar': getattr(user, 'avatar', None)
+        })
+    todos = usuarios + usuarios_registrados
+    return render_template('index.html', usuarios=todos)
 
 @main.route('/contacto', methods=['GET', 'POST'])
 @login_required

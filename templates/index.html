@@ -21,6 +21,7 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th>Avatar</th>
                 <th>Nombre</th>
                 <th>Email</th>
             </tr>
@@ -29,7 +30,16 @@
         {% for usuario in usuarios %}
             <tr>
                 <td class="text-muted">{{ loop.index }}</td>
-                <td class="fw-semibold">{{ usuario.nombre }}</td>
+                                <td>
+                                    {% if usuario.avatar %}
+                                        <img src="{{ url_for('static', filename='avatars/' ~ usuario.avatar) }}" alt="avatar" width="40" height="40" style="object-fit:cover; border-radius:50%;">
+                                    {% else %}
+                                        <div style="width:40px; height:40px; border-radius:50%; background:#9858c6; display:flex; align-items:center; justify-content:center; font-weight:bold; color:white; font-size:1.2em;">
+                                            {{ (usuario.nombre or usuario.username)[0]|upper }}
+                                        </div>
+                                    {% endif %}
+                                </td>
+                <td class="fw-semibold">{{ usuario.nombre or usuario.username }}</td>
                 <td>{{ usuario.email }}</td>
             </tr>
         {% endfor %}
